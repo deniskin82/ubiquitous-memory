@@ -16,35 +16,36 @@ if [ "$(id -u)" -eq 0 ]; then # as root user
 	set +e
 	if ! id -u "${BUILD_USER_NAME}"; then # create build user
 		set -e
-		useradd --create-home --home-dir "${BUILD_USER_HOME}" --skel "${PWD}" \
-			"${BUILD_USER_NAME}"
+		adduser -s /bin/ash -h "${BUILD_USER_HOME}" -k "${PWD}" -D "${BUILD_USER_NAME}"
+		# useradd --create-home --home-dir "${BUILD_USER_HOME}" --skel "${PWD}" \
+		# 	"${BUILD_USER_NAME}"
 	fi
 	set -e
-	# configure apt
-	printf 'APT::Install-Recommends "0";' \
-		> '/etc/apt/apt.conf.d/99-no-install-recommends'
-	printf 'APT::Install-Suggests "0";' \
-		> '/etc/apt/apt.conf.d/99-no-install-suggests'
-	printf 'APT::Get::Assume-Yes "true";' \
-		> '/etc/apt/apt.conf.d/99-assume-yes'
-	# update repositories
-	apt-get update
-	# dependencies to setup repositories
-	apt-get install --quiet \
-		gnupg2 dirmngr apt-transport-https ca-certificates curl
-	# add required additional repositories
-	printf 'deb-src http://deb.debian.org/debian %s main' "${DEBIAN_RELEASE}" \
-		> "/etc/apt/sources.list.d/${DEBIAN_RELEASE}-source.list"
-	printf 'deb http://deb.debian.org/debian %s-backports main' "${DEBIAN_RELEASE}" \
-		> "/etc/apt/sources.list.d/${DEBIAN_RELEASE}-backports.list"
-	# update repositories
-	apt-get update
-	# install dependencies
-	apt-get install --quiet \
-		wget build-essential patch git python2
-	# install 'pngquant' build dependencies (required by node module)
-	apt-get build-dep --quiet \
-		pngquant
+	# # configure apt
+	# printf 'APT::Install-Recommends "0";' \
+	# 	> '/etc/apt/apt.conf.d/99-no-install-recommends'
+	# printf 'APT::Install-Suggests "0";' \
+	# 	> '/etc/apt/apt.conf.d/99-no-install-suggests'
+	# printf 'APT::Get::Assume-Yes "true";' \
+	# 	> '/etc/apt/apt.conf.d/99-assume-yes'
+	# # update repositories
+	# apt-get update
+	# # dependencies to setup repositories
+	# apt-get install --quiet \
+	# 	gnupg2 dirmngr apt-transport-https ca-certificates curl
+	# # add required additional repositories
+	# printf 'deb-src http://deb.debian.org/debian %s main' "${DEBIAN_RELEASE}" \
+	# 	> "/etc/apt/sources.list.d/${DEBIAN_RELEASE}-source.list"
+	# printf 'deb http://deb.debian.org/debian %s-backports main' "${DEBIAN_RELEASE}" \
+	# 	> "/etc/apt/sources.list.d/${DEBIAN_RELEASE}-backports.list"
+	# # update repositories
+	# apt-get update
+	# # install dependencies
+	# apt-get install --quiet \
+	# 	wget build-essential patch git python2
+	# # install 'pngquant' build dependencies (required by node module)
+	# apt-get build-dep --quiet \
+	# 	pngquant
 	# install go from golang.org
 	wget https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz
 	tar -xvf go${GO_VERSION}.linux-amd64.tar.gz
