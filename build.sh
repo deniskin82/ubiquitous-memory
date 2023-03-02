@@ -91,7 +91,7 @@ popd
 # prepare the go build environment
 install --directory "${HOME}/go/bin"
 if [ "$(go env GOOS)_$(go env GOARCH)" != 'linux_amd64' ]; then
-	ln --symbolic \
+	ln -s \
 		"${HOME}/go/bin/$(go env GOOS)_$(go env GOARCH)" \
 		"${HOME}/go/bin/linux_amd64"
 fi
