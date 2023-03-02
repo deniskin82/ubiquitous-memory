@@ -47,15 +47,15 @@ if [ "$(id -u)" -eq 0 ]; then # as root user
 	# apt-get build-dep --quiet \
 	# 	pngquant
 	# install go from golang.org
-	wget --quiet --continue https://golang.org/dl/go${GO_VERSION}.linux-arm64.tar.gz
-	tar -xvf go${GO_VERSION}.linux-arm64.tar.gz
-	mv go /usr/local
-	export GOROOT=/usr/local/go
-	export PATH=$GOROOT/bin:$PATH
-	# FIXME go (executed by build user) writes to GOROOT
-	install --directory --owner="${BUILD_USER_NAME}" \
-		"$(go env GOROOT)/pkg/$(go env GOOS)_$(go env GOARCH)"
-	# Re-invoke this build.sh script with the 'build' user
+	# wget --quiet --continue https://golang.org/dl/go${GO_VERSION}.linux-arm64.tar.gz
+	# tar -xvf go${GO_VERSION}.linux-arm64.tar.gz
+	# mv go /usr/local
+	# export GOROOT=/usr/local/go
+	# export PATH=$GOROOT/bin:$PATH
+	# # FIXME go (executed by build user) writes to GOROOT
+	# install --directory --owner="${BUILD_USER_NAME}" \
+	# 	"$(go env GOROOT)/pkg/$(go env GOOS)_$(go env GOARCH)"
+	# # Re-invoke this build.sh script with the 'build' user
 	runuser -u "${BUILD_USER_NAME}" -- "${0}"
 	# salvage build artifacts
 	cp --verbose \
@@ -65,8 +65,8 @@ if [ "$(id -u)" -eq 0 ]; then # as root user
 	exit 0
 fi
 # as non-root user
-export GOROOT=/usr/local/go
-export PATH=$GOROOT/bin:$PATH
+# export GOROOT=/usr/local/go
+# export PATH=$GOROOT/bin:$PATH
 cd "${HOME}"
 
 # install NVM
