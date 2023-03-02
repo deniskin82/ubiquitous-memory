@@ -47,8 +47,8 @@ if [ "$(id -u)" -eq 0 ]; then # as root user
 	# apt-get build-dep --quiet \
 	# 	pngquant
 	# install go from golang.org
-	wget https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz
-	tar -xvf go${GO_VERSION}.linux-amd64.tar.gz
+	wget --quiet --continue https://golang.org/dl/go${GO_VERSION}.linux-arm64.tar.gz
+	tar -xvf go${GO_VERSION}.linux-arm64.tar.gz
 	mv go /usr/local
 	export GOROOT=/usr/local/go
 	export PATH=$GOROOT/bin:$PATH
